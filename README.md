@@ -145,4 +145,56 @@ echo "--- Skript abgeschlossen! Überprüfe die Ausgaben und den Status deiner A
 **Steam:** **Eine Veröffentlichung auf Steam ist als Plattform für spielerische und interaktive politische Bildung vorgesehen, die ebenfalls durch die Axiomatik gestützt wird.*
 
 ## Beiträge
-**Beiträge zum Projekt sind willkommen und werden durch die Governance-Struktur des RFOF-NETWORK verwaltet.*
+**Beiträge zum Projekt sind willkommen und werden durch die Governance-Struktur des @RFOF-NETWORK verwaltet.*
+---
+
+Projekte in diesem Repository
+Dieses Repository ist als Monorepo strukturiert und enthält mehrere separate Projekte:
+
+BundVoting/: Die Haupt-Webanwendung, entwickelt mit React. Sie ist für die Veröffentlichung auf GitHub Pages, im Google Play Store und im Apple App Store vorgesehen.
+
+bund-voting-spa/: Eine eigenständige interaktive Webanwendung (SPA), die die Vision des Projekts visualisiert.
+
+technologie-stack-spa/: Eine weitere SPA, die den Technologie-Stack und die Werkzeuge des Projekts detailliert erklärt.
+
+Deployment-Workflow
+Ein vollständig automatisierter Workflow für die Veröffentlichung auf allen Plattformen.
+
+Web-App (via GitHub Pages):
+
+Navigiere in das Verzeichnis BundVoting/.
+
+Führe den Befehl npm run deploy aus, um die App zu erstellen und auf GitHub Pages zu veröffentlichen.
+
+Mobile Apps (via Capacitor):
+
+Innerhalb des BundVoting/ Verzeichnisses synchronisiere den Web-Code mit den nativen Projekten mit npx cap sync.
+
+Öffne die Projekte mit npx cap open android und npx cap open ios für die Veröffentlichung in den App-Stores.
+
+Andere SPAs (Manuelles Deployment):
+
+Die HTML-Dateien in den Ordnern bund-voting-spa/ und technologie-stack-spa/ können separat auf Firebase Hosting oder einem anderen Dienst gehostet werden.
+
+Setup & Installation
+Folge diesen Schritten, um das Projekt lokal einzurichten:
+---
+````
+# Repository klonen
+git clone https://github.com/[dein-github-name]/[dein-repo-name].git
+cd [dein-repo-name]
+
+# Ordner für die SPAs erstellen
+mkdir bund-voting-spa
+mkdir technologie-stack-spa
+
+# Navigiere in das Haupt-React-Projekt
+cd BundVoting
+
+# Abhängigkeiten installieren
+npm install
+
+# Entwicklungsserver starten
+npm start
+---
+````
