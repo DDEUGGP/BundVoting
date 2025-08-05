@@ -5,7 +5,7 @@
 
 ---
 ````
-/Dein_Haupt-Repo-Verzeichnis
+/#BundVoting
 ├── .gitignore
 ├── package.json
 ├── README.md
