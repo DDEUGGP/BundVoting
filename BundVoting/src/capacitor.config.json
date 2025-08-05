@@ -1,0 +1,6 @@
+{
+  "appId": "com.rfof.bundvoting",
+  "appName": "BundVoting",
+  "webDir": "build",
+  "bundledWebRuntime": false
+}
