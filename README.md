@@ -7,24 +7,31 @@
 ````
 /#BundVoting
 ├── .gitignore
-├── package.json
+├── .prettierrc
 ├── README.md
 ├── BundVoting/
-│   ├── android/                  <-- Wird von Capacitor erstellt
-│   ├── ios/                      <-- Wird von Capacitor erstellt
+│   ├── .gitignore
 │   ├── public/
 │   │   ├── favicon.ico
-│   │   ├── index.html            <-- Reacts Haupt-HTML
-│   │   └── ...
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   ├── src/
-│   │   ├── App.jsx               <-- DEINE REACT-HAUPTKOMPONENTE
+│   │   ├── App.jsx
 │   │   ├── App.css
-│   │   └── index.js
-│   ├── package.json              <-- Eigene package.json für React
+│   │   ├── index.js
+│   │   ├── index.css
+│   │   ├── reportWebVitals.js
+│   │   ├── setupTests.js
+│   │   └── logo.svg
+│   ├── package.json
+│   ├── yarn.lock
 │   └── capacitor.config.json
-├── bund-voting-spa/              <-- Ordner für die erste interaktive HTML-App
+├── bund-voting-spa/
 │   └── index.html
-└── technologie-stack-spa/        <-- Ordner für die zweite interaktive HTML-App
+└── technologie-stack-spa/
     └── index.html
 ````
   ----
