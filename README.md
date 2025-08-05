@@ -5,13 +5,27 @@
 
 ---
 ````
-/BundVoting
-  ├── public/
-  │   └── index.html
-  ├── src/
-  │   ├── App.jsx  <-- Hier kommt der Code von mir rein
-  │   └── index.js
-  └── README.md    <-- Hier kommt dein Text rein
+/Dein_Haupt-Repo-Verzeichnis
+├── .gitignore
+├── package.json
+├── README.md
+├── BundVoting/
+│   ├── android/                  <-- Wird von Capacitor erstellt
+│   ├── ios/                      <-- Wird von Capacitor erstellt
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html            <-- Reacts Haupt-HTML
+│   │   └── ...
+│   ├── src/
+│   │   ├── App.jsx               <-- DEINE REACT-HAUPTKOMPONENTE
+│   │   ├── App.css
+│   │   └── index.js
+│   ├── package.json              <-- Eigene package.json für React
+│   └── capacitor.config.json
+├── bund-voting-spa/              <-- Ordner für die erste interaktive HTML-App
+│   └── index.html
+└── technologie-stack-spa/        <-- Ordner für die zweite interaktive HTML-App
+    └── index.html
 ````
   ----
   
