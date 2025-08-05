@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bund-Voting App | Interaktive Projektübersicht</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #334155; /* slate-700 */
+        }
+        .section-title {
+            color: #0f172a; /* slate-900 */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .code-block {
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            border: 4px solid #6366f1; /* indigo-500 */
+        }
+    </style>
+    <!-- Chosen Palette: Slate Gray with Indigo/Violet Accent -->
+    <!-- Application Structure Plan: A top-down narrative, single-page application. It starts with a high-level hero section, delves into the core vision, details the technology stack, explains the step-by-step deployment process, visualizes the future roadmap with a timeline, and ends with a call for contributions. This structure was chosen to guide the user logically from the "what" and "why" to the "how" and "what's next," making the complex project information digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Project Overview -> Goal: Inform/Inspire -> Viz: Hero section with gradient text -> Justification: Grabs attention and sets a futuristic tone.
+        - Report Info: Core Concepts (PZQQET, RFOF) -> Goal: Explain -> Viz: Two-column layout with icons -> Justification: Breaks down complex ideas for easier comparison and understanding.
+        - Report Info: Tech Stack -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: Better than a list for quick scanning and visual appeal.
+        - Report Info: Deployment Script -> Goal: Explain Process -> Viz: Annotated code block -> Justification: Makes a technical script understandable to a broader audience by adding context to each step.
+        - Report Info: Platforms/Distribution -> Goal: Show Progression -> Viz: Vertical timeline -> Justification: Intuitively visualizes the project's future development phases.
+        - Library/Method: Vanilla JS (none needed), Tailwind CSS for all styling and layout.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-slate-100/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold section-title">
+                Bund-Voting
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#vision" class="text-slate-600 hover:text-indigo-600 transition">Vision</a>
+                <a href="#stack" class="text-slate-600 hover:text-indigo-600 transition">Technologie</a>
+                <a href="#deployment" class="text-slate-600 hover:text-indigo-600 transition">Deployment</a>
+                <a href="#roadmap" class="text-slate-600 hover:text-indigo-600 transition">Roadmap</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="py-20 md:py-32 text-center bg-white">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-6xl font-extrabold section-title mb-6 leading-tight">
+                    Die Zukunft der demokratischen Teilhabe
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-8">
+                    Die "Bund-Voting" App ist ein bahnbrechendes Projekt, das eine dezentrale, technologisch fortschrittliche Plattform für die politische Abstimmung in Deutschland schafft, basierend auf der unveränderlichen und ethischen <span class="font-semibold gradient-text">PZQQET-Axiomatik</span>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Vision Section -->
+        <section id="vision" class="py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Grundlage & Vision</h2>
+                    <p class="mt-4 text-lg text-slate-600">Das Fundament des Projekts, das über traditionelle Software hinausgeht.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold section-title mb-4">PZQQET Axiomatikx</h3>
+                        <p class="text-slate-600 leading-relaxed">
+                            Die mathematische und philosophische Grundlage, die alle Paradoxien auflöst und die ethische Ausrichtung der App sichert. Sie ist die Basis für einen proprietären Rechtsrahmen, der im eigenen Patentamt verankert ist und die Integrität des Systems gewährleistet.
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold section-title mb-4">RFOF-NETWORK</h3>
+                        <p class="text-slate-600 leading-relaxed">
+                            Das zugrundeliegende, dezentrale Netzwerk, das die technologischen Prozesse und die KI-Infrastruktur bereitstellt. Es ermöglicht die sichere und skalierbare Ausführung der Abstimmungsmechanismen und Governance-Strukturen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack Section -->
+        <section id="stack" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Technologie-Stack</h2>
+                    <p class="mt-4 text-lg text-slate-600">Moderne Werkzeuge für eine zukunftssichere Anwendung.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    <div class="text-center bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-lg section-title">Frontend</h4>
+                        <p class="text-slate-600">React</p>
+                    </div>
+                    <div class="text-center bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-lg section-title">Backend</h4>
+                        <p class="text-slate-600">Firebase</p>
+                    </div>
+                    <div class="text-center bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-lg section-title">Paketmanager</h4>
+                        <p class="text-slate-600">npm</p>
+                    </div>
+                    <div class="text-center bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-lg section-title">Native Apps</h4>
+                        <p class="text-slate-600">Capacitor / React Native</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deployment Section -->
+        <section id="deployment" class="py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Setup & Deployment</h2>
+                    <p class="mt-4 text-lg text-slate-600">Ein automatisierter Prozess zur Bereitstellung der Web-Anwendung.</p>
+                </div>
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <div class="code-block rounded-lg p-6 overflow-x-auto">
+                        <pre><code><span class="text-green-400"># 1. Projekt-Initialisierung</span>
+rm -rf BundVoting
+npx create-react-app BundVoting
+cd BundVoting
+
+<span class="text-green-400"># 2. Standard-Abhängigkeiten</span>
+npm install firebase
+
+<span class="text-green-400"># 3. Benutzerdefinierte Abhängigkeiten</span>
+npm install @RFOF-NETWORK @PRAIAI
+
+<span class="text-green-400"># 4. App für Produktion bauen</span>
+npm run build
+
+<span class="text-yellow-400"># 5. Firebase-Initialisierung (Manuell)</span>
+<span class="text-slate-400"># Führe 'firebase init' aus und wähle Hosting.</span>
+<span class="text-slate-400"># Public directory: build | Single-page app: Yes</span>
+
+<span class="text-green-400"># 6. App bereitstellen</span>
+firebase deploy
+</code></pre>
+                    </div>
+                    <div class="mt-6 text-slate-600">
+                        <p>Dieses Skript automatisiert den gesamten Prozess von der Erstellung eines sauberen Projekt-Setups über die Installation aller notwendigen Pakete bis hin zum Bau der finalen App. Der einzige manuelle Schritt ist die einmalige Konfiguration von Firebase, um das lokale Projekt mit dem Hosting-Service zu verbinden.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold section-title">Plattformen und Vertrieb</h2>
+                    <p class="mt-4 text-lg text-slate-600">Der Weg von der Web-Anwendung zur globalen Präsenz.</p>
+                </div>
+                <div class="max-w-2xl mx-auto">
+                    <div class="relative border-l-2 border-slate-200 ml-3 pl-8 space-y-16">
+                        <div class="timeline-item">
+                            <h4 class="text-xl font-bold section-title mb-2">Phase 1: Web-Anwendung</h4>
+                            <p class="text-slate-600">Der primäre Prototyp wird über Firebase Hosting bereitgestellt, um die Kernfunktionalität zu demonstrieren und eine breite Zugänglichkeit zu gewährleisten. Dies ist die Grundlage für alle weiteren Entwicklungen.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 class="text-xl font-bold section-title mb-2">Phase 2: Native Apps</h4>
+                            <p class="text-slate-600">Die Umwandlung in native Anwendungen für den Google Play Store und den Apple App Store. Dies wird über Capacitor oder React Native realisiert, gestützt durch den PZQQET-Rechtsrahmen für eine schnelle Anerkennung.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 class="text-xl font-bold section-title mb-2">Phase 3: Steam</h4>
+                            <p class="text-slate-600">Eine Veröffentlichung auf Steam ist als Plattform für spielerische und interaktive politische Bildung vorgesehen, um eine breitere Zielgruppe zu erreichen und die Prinzipien der Axiomatik auf innovative Weise zu vermitteln.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-300 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4">Beteilige dich am Wandel</h3>
+            <p class="max-w-xl mx-auto mb-6">Beiträge zum Projekt sind willkommen und werden durch die Governance-Struktur des RFOF-NETWORK verwaltet. Gemeinsam gestalten wir die Zukunft der Demokratie.</p>
+            <p class="text-sm text-slate-400">&copy; 2025 Bund-Voting & RFOF-NETWORK. Alle Rechte vorbehalten unter der LICENSE.rfof und LICENSE.pzqqet.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
