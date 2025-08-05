@@ -17,7 +17,7 @@
   
 ## Erklärung der Schlüsselwerkzeuge
 # 1. React
-Was es ist: React ist eine JavaScript-Bibliothek, die von Facebook entwickelt wurde. Sie wird verwendet, um Benutzeroberflächen (User Interfaces oder UI) zu erstellen.
+***Was es ist:*** React ist eine JavaScript-Bibliothek, die von Facebook entwickelt wurde. Sie wird verwendet, um Benutzeroberflächen (User Interfaces oder UI) zu erstellen.
 
 ***Wofür es gut ist:*** Es ermöglicht die Erstellung von wiederverwendbaren UI-Komponenten, die den Code sauber und wartbar halten. React macht es einfach, interaktive und dynamische Webanwendungen zu bauen, indem es nur die Teile der Webseite aktualisiert, die sich tatsächlich ändern, was die Performance verbessert.
 
