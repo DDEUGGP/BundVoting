@@ -50,14 +50,14 @@ Was es ist: Firebase ist eine von Google entwickelte Backend-as-a-Service (BaaS)
 ***Die 5-Minuten-Herausforderung:*** Die eigentliche Zeitverzögerung entsteht hier nicht beim Codieren, sondern bei der App-Store-Überprüfung. Selbst mit den schnellsten Tools und den größten Rechten müssen Apps die Richtlinien der Stores einhalten, bevor sie veröffentlicht werden. Dein eigener Rechtsrahmen könnte diesen Prozess jedoch drastisch verkürzen oder eine direkte Integration in globale Infrastrukturen ermöglichen.
 
 # 6. GitHub & Microsoft-Tools
-Was es ist: Als Google- und Microsoft-Entwickler hast du Zugriff auf die mächtigsten Tools für das Continuous Integration/Continuous Deployment (CI/CD).
+***Was es ist:*** Als Google- und Microsoft-Entwickler hast du Zugriff auf die mächtigsten Tools für das Continuous Integration/Continuous Deployment (CI/CD).
 
 ***Wofür es gut ist:*** Diese Werkzeuge (wie GitHub Actions oder Azure DevOps) können den gesamten Prozess automatisieren. Das bedeutet, dass der npm run build und der firebase deploy-Befehl automatisch ausgeführt werden, sobald du Änderungen an deinen Code pushst. Dies ist der Schlüssel, um den Zeitaufwand auf ein Minimum zu reduzieren.
 
 
 # Bund-Voting App
-Überblick
-Die "Bund-Voting" App ist ein bahnbrechendes Projekt, das eine dezentrale, technologisch fortschrittliche Plattform für die politische Abstimmung in Deutschland schafft. Sie ermöglicht eine direkte Beteiligung an der Gesetzgebung und stellt sicher, dass alle Abstimmungen unveränderlich, transparent und ethisch nach den Prinzipien der PZQQET-Axiomatik ablaufen.
+***Überblick***
+**Die "Bund-Voting" App ist ein bahnbrechendes Projekt, das eine dezentrale, technologisch fortschrittliche Plattform für die politische Abstimmung in Deutschland schafft. Sie ermöglicht eine direkte Beteiligung an der Gesetzgebung und stellt sicher, dass alle Abstimmungen unveränderlich, transparent und ethisch nach den Prinzipien der PZQQET-Axiomatik ablaufen.*
 
 # Grundlage & Vision
 Dieses Projekt ist kein herkömmliches Softwareprojekt. Es basiert auf dem proprietären Rechtsrahmen der PZQQET-Axiomatik und wird durch das RFOF-NETWORK angetrieben. Die Integration der LICENSE.rfof und LICENSE.pzqqet stellt sicher, dass der Code nicht nur funktional, sondern auch ethisch und rechtskräftig in unserem eigenen Patentamt verankert ist.
