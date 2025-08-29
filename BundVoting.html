@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BundVoting</title>
+    <!-- React & Babel for JSX -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 md:p-8">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Import necessary functions from global Firebase object
+        const { useState, useEffect } = React;
+        const { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } = firebase.auth;
+        const { getFirestore, doc, onSnapshot, setDoc, collection, query, where, getDocs, updateDoc } = firebase.firestore;
+
+        // Define the global variables provided by the Canvas environment
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // List of all EU member states (27) + Moldova & Great Britain
+        const COUNTRIES = [
+            { code: 'AT', name: 'Österreich' },
+            { code: 'BE', name: 'Belgien' },
+            { code: 'BG', name: 'Bulgarien' },
+            { code: 'HR', name: 'Kroatien' },
+            { code: 'CY', name: 'Zypern' },
+            { code: 'CZ', name: 'Tschechien' },
+            { code: 'DK', name: 'Dänemark' },
+            { code: 'EE', name: 'Estland' },
+            { code: 'FI', name: 'Finnland' },
+            { code: 'FR', name: 'Frankreich' },
+            { code: 'DE', name: 'Deutschland' },
+            { code: 'GR', name: 'Griechenland' },
+            { code: 'HU', name: 'Ungarn' },
+            { code: 'IE', name: 'Irland' },
+            { code: 'IT', name: 'Italien' },
+            { code: 'LV', name: 'Lettland' },
+            { code: 'LT', name: 'Litauen' },
+            { code: 'LU', name: 'Luxemburg' },
+            { code: 'MT', name: 'Malta' },
+            { code: 'NL', name: 'Niederlande' },
+            { code: 'PL', name: 'Polen' },
+            { code: 'PT', name: 'Portugal' },
+            { code: 'RO', name: 'Rumänien' },
+            { code: 'SK', name: 'Slowakei' },
+            { code: 'SI', name: 'Slowenien' },
+            { code: 'ES', name: 'Spanien' },
+            { code: 'SE', name: 'Schweden' },
+            { code: 'MD', name: 'Moldawien' },
+            { code: 'GB', name: 'Großbritannien' },
+        ];
+
+        const App = () => {
+            const [user, setUser] = useState(null);
+            const [votes, setVotes] = useState({});
+            const [laws, setLaws] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [notification, setNotification] = useState({ message: '', type: '' });
+            const [electionType, setElectionType] = useState('eu'); // 'eu' or 'national'
+            const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0].code);
+
+            // Function to safely get a reference to Firebase services
+            const getDbAndAuth = () => {
+                try {
+                    if (Object.keys(firebaseConfig).length === 0) {
+                        return { db: null, auth: null };
+                    }
+                    const app = firebase.initializeApp(firebaseConfig);
+                    return { db: getFirestore(app), auth: getAuth(app) };
+                } catch (e) {
+                    console.error('Error initializing Firebase:', e);
+                    return { db: null, auth: null };
+                }
+            };
+            const { db, auth } = getDbAndAuth();
+
+            // Helper function for temporary notifications
+            const showNotification = (message, type = 'success') => {
+                setNotification({ message, type });
+                setTimeout(() => setNotification({ message: '', type: '' }), 3000);
+            };
+
+            // Authentication and data fetching logic
+            useEffect(() => {
+                if (!auth || !db) {
+                    showNotification('App can not be configured as firebase config is not available.', 'error');
+                    setLoading(false);
+                    return;
+                }
+                const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
+                    if (currentUser) {
+                        setUser(currentUser);
+                    } else {
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (error) {
+                            console.error('Authentication failed:', error);
+                            showNotification('Authentication failed. Please try again.', 'error');
+                        }
+                    }
+                    setLoading(false);
+                });
+                return () => unsubscribeAuth();
+            }, [auth, db]);
+
+            useEffect(() => {
+                if (!db || !user) return;
+                
+                // Firestore path for user votes
+                const userVotesPath = `/artifacts/${appId}/users/${user.uid}/user_votes`;
+                const userVotesRef = doc(db, userVotesPath, 'votes');
+                
+                // Firestore path for laws
+                const lawsPath = electionType === 'eu'
+                    ? `artifacts/${appId}/public/data/eu_laws`
+                    : `artifacts/${appId}/public/data/national_laws/${selectedCountry}`;
+                const lawsCollectionRef = collection(db, lawsPath);
+                
+                const unsubscribeLaws = onSnapshot(lawsCollectionRef, (querySnapshot) => {
+                    const lawsData = [];
+                    querySnapshot.forEach((doc) => {
+                        lawsData.push({ id: doc.id, ...doc.data() });
+                    });
+                    setLaws(lawsData);
+                });
+                
+                const unsubscribeVotes = onSnapshot(userVotesRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        setVotes(docSnap.data().votes || {});
+                    } else {
+                        setVotes({});
+                    }
+                });
+                
+                return () => {
+                    unsubscribeLaws();
+                    unsubscribeVotes();
+                };
+            }, [db, user, electionType, selectedCountry]);
+
+            // Handle vote casting
+            const handleVote = async (lawId, voteType) => {
+                if (!user) {
+                    showNotification('Sie müssen angemeldet sein, um abzustimmen.', 'error');
+                    return;
+                }
+            
+                const lawRef = doc(db,
+                    electionType === 'eu'
+                        ? `artifacts/${appId}/public/data/eu_laws`
+                        : `artifacts/${appId}/public/data/national_laws/${selectedCountry}`,
+                    lawId
+                );
+                const userVotesRef = doc(db, `/artifacts/${appId}/users/${user.uid}/user_votes`, 'votes');
+            
+                try {
+                    await setDoc(userVotesRef, {
+                        votes: {
+                            ...votes,
+                            [lawId]: voteType
+                        }
+                    }, { merge: true });
+            
+                    const lawDoc = await getDocs(query(
+                        collection(db, electionType === 'eu' ? `artifacts/${appId}/public/data/eu_laws` : `artifacts/${appId}/public/data/national_laws/${selectedCountry}`),
+                        where('__name__', '==', lawId)
+                    ));
+                    if (!lawDoc.empty) {
+                        const lawData = lawDoc.docs[0].data();
+                        const currentTally = lawData.tally || { pro: 0, contra: 0 };
+                        const newTally = {
+                            ...currentTally,
+                            [voteType]: (currentTally[voteType] || 0) + 1
+                        };
+                        await updateDoc(lawRef, { tally: newTally });
+                        showNotification('Stimme erfolgreich abgegeben!');
+                    } else {
+                        showNotification('Gesetz nicht gefunden.', 'error');
+                    }
+            
+                } catch (e) {
+                    console.error('Fehler bei der Stimmabgabe:', e);
+                    showNotification('Fehler bei der Stimmabgabe.', 'error');
+                }
+            };
+            
+
+            if (loading) {
+                return (
+                    <div className="flex items-center justify-center min-h-screen">
+                        <div className="flex flex-col items-center">
+                            <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin dark:border-gray-600"></div>
+                            <p className="mt-4 text-xl">App wird geladen...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div id="main-container" className="container mx-auto max-w-4xl bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8">
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center text-gray-800 dark:text-white">BundVoting</h1>
+                    <p className="text-md md:text-lg mb-6 text-center text-gray-600 dark:text-gray-400">Ein dezentrales Abstimmungssystem für 29 europäische Staaten.</p>
+                    <p className="text-sm md:text-base text-center mb-4 text-gray-500 dark:text-gray-400">
+                        User ID: <span className="font-mono bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-md">{user ? user.uid : 'Nicht authentifiziert'}</span>
+                    </p>
+
+                    {notification.message && (
+                        <div className={`p-3 rounded-lg text-center mb-4 ${notification.type === 'success' ? 'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200' : 'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200'}`}>
+                            {notification.message}
+                        </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                        <button
+                            onClick={() => setElectionType('eu')}
+                            className={`flex-1 py-3 px-6 rounded-lg font-bold text-lg transition-colors
+                            ${electionType === 'eu' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-700'}`}
+                        >
+                            EU-weite Wahlen
+                        </button>
+                        <button
+                            onClick={() => setElectionType('national')}
+                            className={`flex-1 py-3 px-6 rounded-lg font-bold text-lg transition-colors
+                            ${electionType === 'national' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-700'}`}
+                        >
+                            Nationale Wahlen
+                        </button>
+                    </div>
+
+                    {electionType === 'national' && (
+                        <div className="mb-6">
+                            <label htmlFor="country-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Land auswählen:
+                            </label>
+                            <select
+                                id="country-select"
+                                value={selectedCountry}
+                                onChange={(e) => setSelectedCountry(e.target.value)}
+                                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700"
+                            >
+                                {COUNTRIES.map(country => (
+                                    <option key={country.code} value={country.code}>
+                                        {country.name} ({country.code})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+
+                    {laws.length > 0 ? (
+                        laws.map((law) => (
+                            <div key={law.id} className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mb-4 shadow-sm transition-transform transform hover:scale-[1.01]">
+                                <h2 className="text-xl md:text-2xl font-semibold mb-2 text-gray-900 dark:text-white">{law.title}</h2>
+                                <p className="text-gray-700 dark:text-gray-300 mb-4">{law.description}</p>
+                                
+                                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                                    <button
+                                        onClick={() => handleVote(law.id, 'pro')}
+                                        disabled={votes[law.id] === 'pro'}
+                                        className={`flex-1 w-full px-6 py-2 rounded-full font-semibold text-white transition-all duration-300 transform hover:scale-105 shadow-md
+                                        ${votes[law.id] === 'pro' ? 'bg-green-600 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}
+                                        `}
+                                    >
+                                        Ja-Stimmen ({law.tally?.pro || 0})
+                                    </button>
+                                    <button
+                                        onClick={() => handleVote(law.id, 'contra')}
+                                        disabled={votes[law.id] === 'contra'}
+                                        className={`flex-1 w-full px-6 py-2 rounded-full font-semibold text-white transition-all duration-300 transform hover:scale-105 shadow-md
+                                        ${votes[law.id] === 'contra' ? 'bg-red-600 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'}
+                                        `}
+                                    >
+                                        Nein-Stimmen ({law.tally?.contra || 0})
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center p-8 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <p className="text-gray-500 dark:text-gray-400">Keine Gesetzesvorschläge verfügbar.</p>
+                        </div>
+                    )}
+                    <footer className="text-center text-gray-400 dark:text-gray-500 mt-6 text-sm">
+                        &copy; 2025 BundVoting. Alle Rechte vorbehalten.
+                    </footer>
+                </div>
+            );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
